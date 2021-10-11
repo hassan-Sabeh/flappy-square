@@ -1,0 +1,6 @@
+class Dude {
+    constructor () {
+        //attributes
+    }
+    
+}
