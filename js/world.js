@@ -1,4 +1,5 @@
 console.log("i am in the world");
+var currentPixelPosition;
 
 class World {
     constructor () {
@@ -86,5 +87,35 @@ class World {
     ironCertificate(x, y) {
         if (!this.img) return; // if `this.img` is not loaded yet => don't draw
         ctx.drawImage(this.img, x, y, this.w, this.h);
+      }
+      
+    drawWorld() {
+        this.traceGround();
+        currentPixelPosition = this.addStairsUp(200, 'black');
+        this.addBlockObstacle(currentPixelPosition + 20, 'black', 260 - this.stairHeight - 40);
+        currentPixelPosition = this.addElevatedTerrain(currentPixelPosition, 'black', 200, this.stairHeight, 260 - this.stairHeight);
+        currentPixelPosition = this.addStairsDown(currentPixelPosition, 'black');
+        // ctx.restore();
+        this.addBlockObstacle(currentPixelPosition + 150, 'black', 260 - 40);
+        currentPixelPosition = this.addStairsUp(currentPixelPosition + 300, 'black');
+        currentPixelPosition = this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        currentPixelPosition = this.addStairsUp(currentPixelPosition, 'black', this.groundReference - this.stairHeight);
+        this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        currentPixelPosition = this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - 2*this.stairHeight);
+        this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        this.addElevatedTerrain(currentPixelPosition, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        this.addStairsDown(currentPixelPosition, 'black', this.groundReference - this.stairHeight);
+        this.addTunnel(currentPixelPosition + 100, 'black', 100, this.groundReference - this.stairHeight - 200 );
+        this.addTunnel(currentPixelPosition + 200, 'black',  75, 0);
+        currentPixelPosition = this.addElevatedTerrain(currentPixelPosition + 200, 'black', this.stairswidth, this.stairHeight, 260 - this.stairHeight);
+        currentPixelPosition = currentPixelPosition = this.addStairsDown(currentPixelPosition, 'black');
+        this.addBlockObstacle(currentPixelPosition + 150, 'black', 260 - 40);
+        this.addTunnel(currentPixelPosition + 100, 'black', 100, this.groundReference - this.stairHeight - 200 );
+        currentPixelPosition = this.addTunnel(currentPixelPosition, 'black',  150, 0);
+        this.addTunnel(currentPixelPosition, 'black',  150, 0);
+        currentPixelPosition = this.addBlockObstacle(currentPixelPosition + 150, 'black', 260 - 40);
+        //show certificate
+        this.ironCertificate(currentPixelPosition + 700, 200);
       }
 }

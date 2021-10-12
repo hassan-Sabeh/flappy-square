@@ -1,6 +1,0 @@
-class Dude {
-    constructor () {
-        //attributes
-    }
-    
-}
