@@ -127,7 +127,7 @@ document.onkeyup = function (e) {
 }
 
 function animLoop() {
-  draw();
+    draw();
 
   requestAnimationFrame(animLoop);
 }
