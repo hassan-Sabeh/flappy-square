@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d');
 let myWorld = new World(0);
-let heroXPosition = 250;
+let heroXPosition = 100;
 let heroYPosition = 100;
 let hero = new Hero (heroXPosition, heroYPosition);
 var positionCounter = 0;
@@ -9,25 +9,37 @@ var positionCounter = 0;
 console.log('hereh');
 var timeoutId;
 //normally at 15
-var speed = 0;
+var maxSpeed = 30;
 var movementFrames = 0;
 var movementDirection = '';
 var animtId;
+var obstacleCollision = false;
 
 function draw() {
     ctx.clearRect(0, 0, myWorld.worldLength, 300);
     myWorld.updateWorld();
+    // checkCollisions();
     hero.update();
 }
 
+// function checkCollisions() {
+//     // console.log(hero.x + hero.h);
+//     // console.log(myWorld.stairsUp1.pixelPosition);
+//     if ((hero.x + hero.h) >= myWorld.stairsUp1.pixelPosition) {
+//         obstacleCollision = true;
+//         console.log('stuck here');
+//     }
+//     else obstacleCollision = false;
+// }
 
 function move(direction){
     let translateDirection;
-    if (direction === 'backwards') {
-        myWorld.speedX = 10;
+    if (direction === 'backwards' &&  obstacleCollision === false) {
+        console.log(obstacleCollision);
+        myWorld.speedX = maxSpeed;
     }
-    else if (direction === 'farward'){
-        myWorld.speedX = -10;
+    else if (direction === 'farward' && obstacleCollision === false){
+        myWorld.speedX = -1*maxSpeed;
     }
     else {myWorld.speedX = 0;}
 }
@@ -74,9 +86,6 @@ document.addEventListener('keydown', event => {
         else {hero.jump();}
     }
 });
-
-
-
 
 document.addEventListener('keyup', event => {
     if(event.keyCode === 39) {
