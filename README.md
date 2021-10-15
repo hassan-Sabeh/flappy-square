@@ -1,1 +1,1 @@
-# flappy-sqaure
+# flappy-square
