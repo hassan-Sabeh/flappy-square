@@ -25,6 +25,7 @@ const groundRefObjs = {
 
 
 function draw() {
+    move();
     ctx.clearRect(0, 0, myWorld.worldLength, 300);
     worldElementsObj =  myWorld.updateWorld();
     checkPotentialRef()
@@ -165,16 +166,18 @@ function checkLowerCollision(beingCrossedArr) {
     }
 }
 
-function move(direction){
+function move(){
+    //direction was the argument to this function
     let translateDirection;
-    if (direction === 'backwards' &&  obstacleCollision === false) {
-        // console.log(obstacleCollision);
-        myWorld.speedX = maxSpeed;
-    }
-    else if (direction === 'farward' && obstacleCollision === false){
-        myWorld.speedX = -1*maxSpeed;
-    }
-    else {myWorld.speedX = 0;}
+    myWorld.speedX = -1*maxSpeed;
+    // if (direction === 'backwards' &&  obstacleCollision === false) {
+    //     // console.log(obstacleCollision);
+    //     myWorld.speedX = maxSpeed;
+    // }
+    // else if (direction === 'farward' && obstacleCollision === false){
+    //     myWorld.speedX = -1*maxSpeed;
+    // }
+    // else {myWorld.speedX = 0;}
 }
 
 
