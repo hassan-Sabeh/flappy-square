@@ -2,7 +2,6 @@
 const heroX = 100;
 const heroW = 20;
 
-console.log("i am in the world");
 const worldElements = {
             'stairsUp1' : false,
             'stairsUp2' : false,
@@ -54,7 +53,7 @@ class World {
         this.stairsDown2 = new StairsDown('stairsDown2');
         this.stairsDown3 = new StairsDown('stairsDown3');
         //ground object
-        this.ground = new Ground();
+        this.ground = new Ground('ground');
         //block objects
         this.block1 = new Block('block1');
         this.block2 = new Block('block2');
@@ -72,6 +71,11 @@ class World {
         this.tunnel2 = new Tunnel('tunnel2');
         this.tunnel3 = new Tunnel('tunnel3');
         this.tunnel4 = new Tunnel('tunnel4');
+        this.tunnel5 = new Tunnel('tunnel5');
+        this.tunnel6 = new Tunnel('tunnel6');
+        this.tunnel7 = new Tunnel('tunnel7');
+        this.tunnel8 = new Tunnel('tunnel8');
+        this.tunnel9 = new Tunnel('tunnel9');
         //certificate object
         this.ironCertificate = new IronCertificate();
     
@@ -79,6 +83,8 @@ class World {
     updateWorld() {
         this.ground.updateGround(this.speedX);
         this.nextPixelPosition = this.stairsUp1.updateStairs(this.speedX, 'black');
+        this.tunnel8.updateTunnel(this.nextPixelPosition + 50, 'black', 500, 100, this.stairsUp1.groundReference - this.stairsUp1.stairHeight - 200);
+        this.tunnel9.updateTunnel(this.nextPixelPosition + 50 + 500, 'black', 500, 100, this.stairsUp1.groundReference - this.stairsUp1.stairHeight - 200);
         this.block1.updateBlock(this.nextPixelPosition, 'black', 120);
         this.nextPixelPosition = this.platform1.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.nextPixelPosition = this.stairsDown1.updateStairs(this.nextPixelPosition, 'black');
@@ -93,8 +99,7 @@ class World {
         this.platform7.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.nextPixelPosition = this.stairsDown2.updateStairs(this.nextPixelPosition, 'black', 'level up');
         this.stairsDown3.updateStairs(this.nextPixelPosition, 'black');
-        this.tunnel1.updateTunnel(this.nextPixelPosition + 100, 'black', 500,100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200 );
-        this.tunnel2.updateTunnel(this.nextPixelPosition + 200, 'black', 500,75, 0);
+        this.tunnel1.updateTunnel(this.nextPixelPosition + 100, 'black', 500, 100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200 );
         this.block3.updateBlock(this.nextPixelPosition + 400, 'black', 220);
         this.nextPixelPosition = this.tunnel3.updateTunnel(this.nextPixelPosition + 100, 'black', 500,100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200);
         this.nextPixelPosition = this.tunnel4.updateTunnel(this.nextPixelPosition, 'black', 500,150, 0);
@@ -105,9 +110,24 @@ class World {
 }
 
 class Ground {
-    constructor () {
+    constructor (elementName) {
         this.x = 0;
-        this.y = 260; 
+        this.y = 260;
+        this.elementName = elementName;
+        this.boundaries; 
+    }
+    updateBoundaries(pixelPosition) {
+        let Elboundaries = {start: pixelPosition, end: 4000, zeroPotential: 240}
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition) {
+            worldElements[this.elementName] = true;
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
     }
 
     drawGround() {
@@ -123,6 +143,8 @@ class Ground {
 
     updateGround(speedX) {
         this.x += speedX
+        this.checkBeingCrossed(this.x);
+        this.boundaries = this.updateBoundaries(this.x);
         this.drawGround();
     }
 }
@@ -203,7 +225,6 @@ class StairsUp {
     checkBeingCrossed(pixelPosition) {
         if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.stairswidth)) {
             worldElements[this.elementName] = true;
-            // console.log('going up the stairs');
             return;
         }
         worldElements[this.elementName] = false;
@@ -386,8 +407,8 @@ class Tunnel {
         this.groundReference;
         this.boundaries;
     }
-    updateBoundaries(pixelPosition, groundReference) {
-        let Elboundaries = {start: pixelPosition, end: pixelPosition + 80, zeroPotential: (groundReference -20)} // !! hard coded not good, needs to change
+    updateBoundaries(pixelPosition, groundReference, width, heigth) {
+        let Elboundaries = {start: pixelPosition, end: pixelPosition + width, zeroPotential: (groundReference + heigth)} // !! hard coded not good, needs to change
         return Elboundaries;
     }
 
@@ -409,6 +430,8 @@ class Tunnel {
     updateTunnel(pixelPosition, color, width, height, groundReference) {
         this.pixelPosition = pixelPosition;
         this.groundReference = groundReference;
+        this.checkBeingCrossed(this.pixelPosition);
+        this.boundaries = this.updateBoundaries(this.pixelPosition, this.groundReference,width, height);
         return this.drawTunnel(pixelPosition, color, width, height, this.groundReference);
     }
 }
@@ -424,10 +447,11 @@ class IronCertificate {
         }
         img.src = "ironCertificate.png";
         this.pixelPosition;
+        this.y = 200;
     }
     show(pixelPosition) {
         if (!this.img) return;
-        ctx.drawImage(this.img, pixelPosition, 200, this.w, this.h);
+        ctx.drawImage(this.img, pixelPosition, this.y, this.w, this.h);
     }
     update(pixelPosition) {
         this.pixelPosition = pixelPosition;
