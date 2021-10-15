@@ -13,8 +13,8 @@ class Hero {
             lower: canvas.height - 40 - this.h,
         }
         this.gravity = 2;
-        this.jumpStrength = 10;
-        this.jumpSegmentation = 1;
+        this.jumpStrength = 10   ;
+        this.jumpSegmentation = 2;
         this.fallingState = false;
     }
           
@@ -36,11 +36,6 @@ class Hero {
             this.vy = 0;    
             this.fallingState = false;
         } 
-        // if (this.zeroPotential.filter((el) => this.y === el)) {
-        //         this.vy = 0;    
-        //         this.fallingState = false;
-        //         // this.zeroPotential = [];
-        //     }
         else {
             this.y  += this.vy;
             this.vy = 0;
@@ -49,16 +44,8 @@ class Hero {
         this.zeroPotential = [0];
     }
     
-    // checkHit() {
-    //     if (this.y = this.zeroPotential) {
-    //         console.log("hit");
-    //         return;
-    //     }
-    // }
-
     jump() {
         if (this.vy !== 0) return;
         this.vy -= this.jumpSegmentation;
-        // console.log(this.vy);
     }
 }

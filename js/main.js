@@ -8,7 +8,7 @@ var positionCounter = 0;
 var heroFront = heroXPosition + hero.w;  
 var timeoutId;
 //normally at 15
-var maxSpeed = 5; 
+var maxSpeed = 1; 
 var movementFrames = 0;
 var movementDirection = '';
 var animtId;
