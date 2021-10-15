@@ -37,13 +37,13 @@ function draw() {
 function checkGameState () {
     if (!hero.fallingState) {
         hero.color = 'red';
-        // gameState = false;
-        // jumpAbility = false;
-        // maxSpeed = 0;
-        // hero.zeroPotential = 1000;
+        gameState = false;
+        jumpAbility = false;
+        maxSpeed = 0;
+        hero.zeroPotential = 1000;
     }
     else if (hero.y > canvas.height) {
-        // gameOverSequence();
+        gameOverSequence();
     }
     else if (gotCertificate) {
         gameState = false;
@@ -52,8 +52,7 @@ function checkGameState () {
     }
 }
 function gameOverSequence() {
-    freez();
-    ctx.font = "30px Comic Sans MS";
+    ctx.font = "30px sans-serif";
     ctx.fillStyle = "red";
     ctx.textAlign = "center";
     ctx.fillText("You lost :/ type 'r' to reload", canvas.width/2, canvas.height/2);
