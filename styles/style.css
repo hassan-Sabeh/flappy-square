@@ -22,6 +22,7 @@ body {
 #game-instructions {
     display: flex;
     align-items: center;
+    font-family: sans-serif;
     /* justify-content: space-between; */
 }
 
