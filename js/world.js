@@ -1,7 +1,35 @@
+//TODO change this global variable and pass it as an argument for the subclasses
+const heroX = 100;
+const heroW = 20;
+
 console.log("i am in the world");
+const worldElements = {
+            'stairsUp1' : false,
+            'stairsUp2' : false,
+            'stairsUp3' : false,
+            'stairsDown1' : false,
+            'stairsDown2' : false,
+            'stairsDown3' : false,
+            'ground' : false,
+            'block1' : false,
+            'block2' : false,
+            'block3' : false,
+            'platform1' : false,
+            'platform2' : false,
+            'platform3' : false,
+            'platform4' : false,
+            'platform5' : false,
+            'platform6' : false,
+            'platform7' : false,
+            'tunnel1' : false,
+            'tunnel2' : false,
+            'tunnel3' : false,
+            'tunnel4' : false,
+            'ironCertificate' : false,
+};
 
 class World {
-    constructor () {
+    constructor (heroX, heroW) {
         //class attributes
         const img = document.createElement('img');
         img.onload = () => {
@@ -10,6 +38,8 @@ class World {
             this.h = this.w/imgRatio;
             this.img = img
           }
+        this.heroX = heroX;
+        this.heroW = heroW;
         this.nextPixelPosition = 200;
         this.worldLength = 5000;
         this.currentPixelLocation = 0;
@@ -17,102 +47,34 @@ class World {
         img.src = "ironCertificate.png";
         //stairs up objects
         this.stairsUp1 = new ColoredStairsUp(200, 160);
-        this.starisUp2 = new StairsUp();
-        this.starisUp3 = new StairsUp();
+        this.stairsUp2 = new StairsUp('stairsUp2');
+        this.stairsUp3 = new StairsUp('stairsUp3');
         //stairs down objects
-        this.stairsDown1 = new StairsDown();
-        this.stairsDown2 = new StairsDown();
-        this.stairsDown3 = new StairsDown();
+        this.stairsDown1 = new StairsDown('stairsDown1');
+        this.stairsDown2 = new StairsDown('stairsDown2');
+        this.stairsDown3 = new StairsDown('stairsDown3');
         //ground object
         this.ground = new Ground();
         //block objects
-        this.block1 = new Block();
-        this.block2 = new Block();
-        this.block3 = new Block();
+        this.block1 = new Block('block1');
+        this.block2 = new Block('block2');
+        this.block3 = new Block('block3');
         //platform objects
-        this.platform1 = new Platform();
-        this.platform2 = new Platform();
-        this.platform3 = new Platform();
-        this.platform4 = new Platform();
-        this.platform5 = new Platform();
-        this.platform6 = new Platform();
-        this.platform7 = new Platform();
+        this.platform1 = new Platform('platform1');
+        this.platform2 = new Platform('platform2');
+        this.platform3 = new Platform('platform3');
+        this.platform4 = new Platform('platform4');
+        this.platform5 = new Platform('platform5');
+        this.platform6 = new Platform('platform6');
+        this.platform7 = new Platform('platform7');
         //tunnel objects
-        this.tunnel1 = new Tunnel();
-        this.tunnel2 = new Tunnel();
-        this.tunnel3 = new Tunnel();
-        this.tunnel4 = new Tunnel();
+        this.tunnel1 = new Tunnel('tunnel1');
+        this.tunnel2 = new Tunnel('tunnel2');
+        this.tunnel3 = new Tunnel('tunnel3');
+        this.tunnel4 = new Tunnel('tunnel4');
         //certificate object
         this.ironCertificate = new IronCertificate();
     
-    }
-    
-    traceGround() {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 260, 1000, 40);
-        ctx.fillStyle = 'red';
-        ctx.fillRect(1000, 260, 1000, 40);
-
-        ctx.fillStyle = 'black';
-        ctx.fillRect(2000, 260, 1000, 40);
-
-
-        ctx.fillStyle = 'red';
-        ctx.fillRect(3000, 260, 1000, 40);
-    }
-
-
-    addStairsUp(pixelPosition, color, groundReference = this.groundReference) { 
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference, this.stairswidth, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition + this.stairStepWidth,  groundReference - this.stairStepHeight, this.stairswidth - this.stairStepWidth, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition + this.stairStepWidth*2,  groundReference - this.stairStepHeight*2, this.stairswidth - this.stairStepWidth*2, this.stairStepHeight);
-        
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition + this.stairStepWidth*3,  groundReference - this.stairStepHeight*3, this.stairswidth - this.stairStepWidth*3, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition + this.stairStepWidth*4,  groundReference - this.stairStepHeight*4, this.stairswidth - this.stairStepWidth*4, this.stairStepHeight);
-        return pixelPosition + this.stairswidth;
-    }
-
-    
-    addStairsDown(pixelPosition, color,  groundReference = this.groundReference) {  
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference - this.stairStepHeight*4, this.stairswidth - this.stairStepWidth*4, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference - this.stairStepHeight*3, this.stairswidth - this.stairStepWidth*3, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference - this.stairStepHeight*2, this.stairswidth - this.stairStepWidth*2, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference - this.stairStepHeight, this.stairswidth - this.stairStepWidth, this.stairStepHeight);
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference, this.stairswidth, 20);
-        return pixelPosition+ this.stairswidth;
-    }
-
-    addBlockObstacle(pixelPosition, color, groundReference) {
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition, groundReference, 40, 40);
-        return pixelPosition+ 40;
-    }
-
-    addElevatedTerrain(pixelPosition, color, terrainWidth, terrainHeight, groundReference) {
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition,  groundReference, terrainWidth, terrainHeight);
-        return pixelPosition + terrainWidth;
-    }
-    
-    addTunnel(pixelPosition, color,  height, groundReference = this.groundReference) {
-        ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition, groundReference, 500, height);
-        return pixelPosition + 500;
-    }
-
-    ironCertificate(x, y) {
-        if (!this.img) return; // if `this.img` is not loaded yet => don't draw
-        ctx.drawImage(this.img, x, y, this.w, this.h);
       }
     updateWorld() {
         this.ground.updateGround(this.speedX);
@@ -121,22 +83,23 @@ class World {
         this.nextPixelPosition = this.platform1.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.nextPixelPosition = this.stairsDown1.updateStairs(this.nextPixelPosition, 'black');
         this.block2.updateBlock(this.nextPixelPosition + 150, 'black', 220);
-        this.nextPixelPosition = this.starisUp2.updateStairs(this.nextPixelPosition + 300, 'black');
+        this.nextPixelPosition = this.stairsUp2.updateStairs(this.nextPixelPosition + 300, 'black');
         this.nextPixelPosition = this.platform2.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.nextPixelPosition = this.platform3.updatePlatform(this.nextPixelPosition, 'black', 160);
-        this.starisUp3.updateStairs(this.nextPixelPosition, 'black', 'level up');
+        this.stairsUp3.updateStairs(this.nextPixelPosition, 'black', 'level up');
         this.nextPixelPosition = this.platform4.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.platform5.updatePlatform(this.nextPixelPosition, 'black', 160);
-        this.nextPixelPosition = this.platform6.updatePlatform(this.nextPixelPosition, 'black', 60);
+        // this.nextPixelPosition = this.platform6.updatePlatform(this.nextPixelPosition, 'red', 60);
         this.platform7.updatePlatform(this.nextPixelPosition, 'black', 160);
         this.nextPixelPosition = this.stairsDown2.updateStairs(this.nextPixelPosition, 'black', 'level up');
         this.stairsDown3.updateStairs(this.nextPixelPosition, 'black');
-        this.tunnel1.updateTunnel(this.nextPixelPosition + 100, 'black', 100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200 );
-        this.tunnel2.updateTunnel(this.nextPixelPosition + 200, 'black', 75, 0);
+        this.tunnel1.updateTunnel(this.nextPixelPosition + 100, 'black', 500,100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200 );
+        this.tunnel2.updateTunnel(this.nextPixelPosition + 200, 'black', 500,75, 0);
         this.block3.updateBlock(this.nextPixelPosition + 400, 'black', 220);
-        this.nextPixelPosition = this.tunnel3.updateTunnel(this.nextPixelPosition + 100, 'black', 100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200);
-        this.nextPixelPosition = this.tunnel4.updateTunnel(this.nextPixelPosition, 'black', 150, 0);
+        this.nextPixelPosition = this.tunnel3.updateTunnel(this.nextPixelPosition + 100, 'black', 500,100, this.stairsDown3.groundReference - this.stairsDown3.stairHeight - 200);
+        this.nextPixelPosition = this.tunnel4.updateTunnel(this.nextPixelPosition, 'black', 500,150, 0);
         this.ironCertificate.update(this.nextPixelPosition + 500);
+        return worldElements;
     }
 
 }
@@ -172,48 +135,92 @@ class ColoredStairsUp {
         this.stairStepHeight = 20;
         this.stairswidth = 5*this.stairStepWidth;
         this.stairHeight = 5*this.stairStepHeight;
+        this.boundaries;
+    }
+
+    updateBoundaries(pixelPosition) {
+        let Elboundaries = {
+            1:{start: pixelPosition, end: pixelPosition + 40, zeroPotential: 220},
+            2:{start: pixelPosition + 20, end: pixelPosition + 80, zeroPotential: 200},
+            3:{start: pixelPosition + 40, end: pixelPosition + 120, zeroPotential: 180},
+            4:{start: pixelPosition + 60, end: pixelPosition + 160, zeroPotential: 160},
+            5:{start: pixelPosition + 80, end: this.stairswidth + heroW, zeroPotential: 140},
+        }
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.stairswidth)) {
+            worldElements['stairsUp1'] = true;
+            return;
+        }
+        worldElements['stairsUp1'] = false;
+        return;
     }
 
     drawStairs(pixelPosition, color,) {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition,  this.groundReference, this.stairswidth, this.stairStepHeight);
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth,  this.groundReference - this.stairStepHeight, this.stairswidth - this.stairStepWidth, this.stairStepHeight);
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*2,  this.groundReference - this.stairStepHeight*2, this.stairswidth - this.stairStepWidth*2, this.stairStepHeight);
         
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*3,  this.groundReference - this.stairStepHeight*3, this.stairswidth - this.stairStepWidth*3, this.stairStepHeight);
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*4,  this.groundReference - this.stairStepHeight*4, this.stairswidth - this.stairStepWidth*4, this.stairStepHeight);
         return pixelPosition + this.stairswidth;
     }
     updateStairs(speedX, color) {
             this.pixelPosition += speedX;
+            this.checkBeingCrossed(this.pixelPosition);    
+            this.boundaries = this.updateBoundaries(this.pixelPosition);
             return this.drawStairs(this.pixelPosition, color);  
         }
 }
 
 class StairsUp {
-    constructor () {
+    constructor (elementName) {
+        this.elementName = elementName;
         this.groundReference = 240;
         this.stairStepWidth = 40;
         this.stairStepHeight = 20;
         this.stairswidth = 5*this.stairStepWidth;
         this.stairHeight = 5*this.stairStepHeight;
+        this.boundaries;
+    }
+    updateBoundaries(pixelPosition) {
+        let Elboundaries = {
+            1:{start: pixelPosition, end: pixelPosition + 40, zeroPotential: (this.groundReference - 20)},
+            2:{start: pixelPosition + 20, end: pixelPosition + 80, zeroPotential: (this.groundReference - 40)},
+            3:{start: pixelPosition + 40, end: pixelPosition + 120, zeroPotential: (this.groundReference - 60)},
+            4:{start: pixelPosition + 60, end: pixelPosition + 160, zeroPotential: (this.groundReference - 80)},
+            5:{start: pixelPosition + 80, end: this.stairswidth + heroW, zeroPotential: (this.groundReference - 100)},
+        }
+        return Elboundaries;
+    }
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.stairswidth)) {
+            worldElements[this.elementName] = true;
+            // console.log('going up the stairs');
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
     }
 
     drawStairs(pixelPosition, color,) {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition,  this.groundReference, this.stairswidth, this.stairStepHeight);
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth,  this.groundReference - this.stairStepHeight, this.stairswidth - this.stairStepWidth, this.stairStepHeight);
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*2,  this.groundReference - this.stairStepHeight*2, this.stairswidth - this.stairStepWidth*2, this.stairStepHeight);
         
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*3,  this.groundReference - this.stairStepHeight*3, this.stairswidth - this.stairStepWidth*3, this.stairStepHeight);
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = color;
         ctx.fillRect(pixelPosition + this.stairStepWidth*4,  this.groundReference - this.stairStepHeight*4, this.stairswidth - this.stairStepWidth*4, this.stairStepHeight);
         return pixelPosition + this.stairswidth;
     }
@@ -221,23 +228,43 @@ class StairsUp {
             if (level === 'level up') {
                 this.groundReference = 140;
                 this.pixelPosition = pixelPosition;
+                this.checkBeingCrossed(this.pixelPosition);    
+                this.boundaries = this.updateBoundaries(this.pixelPosition);
                 return this.drawStairs(this.pixelPosition, color);
             }
             this.pixelPosition = pixelPosition;
+            this.checkBeingCrossed(this.pixelPosition);    
+            this.boundaries = this.updateBoundaries(this.pixelPosition);
             return this.drawStairs(this.pixelPosition, color);  
         }
 }
 
 
 class Block {
-    constructor () {
+    constructor (elementName) {
         // this.x = x;
         // this.y = y;
+        this.elementName = elementName;
         this.w = 40;
         this.h = 40; 
         this.pixelPosition;
+        this.boundaries;
 
     }
+    updateBoundaries(pixelPosition, groundReference) {
+        let Elboundaries = {start: pixelPosition, end: pixelPosition + 80, zeroPotential: (groundReference -20)}
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.w)) {
+            worldElements[this.elementName] = true;
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
+    }
+    
     drawBlock(pixelPosition, color, groundReference) {
         ctx.fillStyle = color;
         ctx.fillRect(pixelPosition, groundReference, this.w, this.h);
@@ -246,15 +273,32 @@ class Block {
 
     updateBlock(pixelPosition, color,  groundReference) {
         this.pixelPosition = pixelPosition; 
+        this.checkBeingCrossed(this.pixelPosition);
+        this.boundaries = this.updateBoundaries(this.pixelPosition, groundReference);
         return this.drawBlock(this.pixelPosition, color, groundReference);
     }
 }
 
 class Platform {
-    constructor() {
+    constructor(elementName) {
+        this.elementName = elementName;
         this.w = 200;
         this.h = 100;
         this.pixelPosition;
+        this.boundaries;
+    }
+    updateBoundaries(pixelPosition, groundReference) {
+        let Elboundaries = {start: pixelPosition, end: pixelPosition + 80, zeroPotential: (groundReference -20)} // !! hard coded not good, needs to change
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.w)) {
+            worldElements[this.elementName] = true;
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
     }
 
     drawPlatform(pixelPosition, color, groundReference) {
@@ -265,18 +309,42 @@ class Platform {
 
     updatePlatform(pixelPosition, color,  groundReference) {
         this.pixelPosition = pixelPosition; 
+        this.checkBeingCrossed(this.pixelPosition);
+        this.boundaries = this.updateBoundaries(this.pixelPosition, groundReference);
         return this.drawPlatform(this.pixelPosition, color, groundReference);
     }
 }
 
 class StairsDown {
-    constructor () {
+    constructor (elementName) {
+        this.elementName = elementName;
         this.pixelPosition;
         this.groundReference = 240;
         this.stairStepWidth = 40;
         this.stairStepHeight = 20;
         this.stairswidth = 5*this.stairStepWidth;
         this.stairHeight = 5*this.stairStepHeight;
+        this.boundaries;
+    }
+
+    updateBoundaries(pixelPosition) {
+        let Elboundaries = {
+            1:{start: pixelPosition, end: pixelPosition + 40, zeroPotential: (this.groundReference - 100)},
+            2:{start: pixelPosition + 20, end: pixelPosition + 80, zeroPotential: (this.groundReference - 80)},
+            3:{start: pixelPosition + 40, end: pixelPosition + 120, zeroPotential: (this.groundReference - 60)},
+            4:{start: pixelPosition + 60, end: pixelPosition + 160, zeroPotential: (this.groundReference - 40)},
+            5:{start: pixelPosition + 80, end: this.stairswidth + heroW, zeroPotential: (this.groundReference - 20)},
+        }
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.stairswidth)) {
+            worldElements[this.elementName] = true;
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
     }
 
     drawStairs(pixelPosition, color) {  
@@ -297,31 +365,51 @@ class StairsDown {
         if (level === 'level up') {
             this.groundReference = 140;
             this.pixelPosition = pixelPosition;
+            this.checkBeingCrossed(this.pixelPosition);    
+            this.boundaries = this.updateBoundaries(this.pixelPosition);
             return this.drawStairs(this.pixelPosition, color);
         }
         this.groundReference = 240;
         this.pixelPosition = pixelPosition;
+        this.checkBeingCrossed(this.pixelPosition);    
+            this.boundaries = this.updateBoundaries(this.pixelPosition);
         return this.drawStairs(this.pixelPosition, color);  
     }
 }
 
 class Tunnel {
-    constructor () {
+    constructor (elementName) {
+        this.elementName = elementName;
         this.w = 500;
         this.h;
         this.pixelPosition;
         this.groundReference;
+        this.boundaries;
     }
-    drawTunnel(pixelPosition, color,  height, groundReference) {
+    updateBoundaries(pixelPosition, groundReference) {
+        let Elboundaries = {start: pixelPosition, end: pixelPosition + 80, zeroPotential: (groundReference -20)} // !! hard coded not good, needs to change
+        return Elboundaries;
+    }
+
+    checkBeingCrossed(pixelPosition) {
+        if ((heroX + heroW) >= pixelPosition && (heroX + heroW) < (pixelPosition + this.w)) {
+            worldElements[this.elementName] = true;
+            return;
+        }
+        worldElements[this.elementName] = false;
+        return;
+    }
+    
+    drawTunnel(pixelPosition, color,  width,height, groundReference) {
         ctx.fillStyle = color;
-        ctx.fillRect(pixelPosition, groundReference, 500, height);
+        ctx.fillRect(pixelPosition, groundReference, width, height);
         return pixelPosition + this.w;
     }
 
-    updateTunnel(pixelPosition, color, height, groundReference) {
+    updateTunnel(pixelPosition, color, width, height, groundReference) {
         this.pixelPosition = pixelPosition;
         this.groundReference = groundReference;
-        return this.drawTunnel(pixelPosition, color, height, this.groundReference);
+        return this.drawTunnel(pixelPosition, color, width, height, this.groundReference);
     }
 }
 
