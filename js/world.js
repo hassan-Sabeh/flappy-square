@@ -263,8 +263,6 @@ class StairsUp {
 
 class Block {
     constructor (elementName) {
-        // this.x = x;
-        // this.y = y;
         this.elementName = elementName;
         this.w = 40;
         this.h = 40; 

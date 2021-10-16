@@ -1,23 +1,40 @@
 body {
     background-color: #333A3E;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     padding-top: 150px;
     padding-left: 300px;
 }
 #game-title > h1 {
-    padding-left: 150px;
+    padding-left: 50px;
     font-weight: bolder;
     font-family: sans-serif;
+    padding-right: 100px;
+    text-align: left;
+}
+
+#game-title {
+    display: flex;
+    align-items: center;
+    /* padding-right: 200px; */
 }
 
 #space-bar-img {
     width: 150px;
 }
 
+#space-bar {
+    display:flex;
+    flex-direction: column;
+}
+
 #arrow-buttons-img {
     width: 100px;
 }
+#space-bar > h2{
+    text-align: center;
+}
+
 
 #game-instructions {
     display: flex;
@@ -28,4 +45,9 @@ body {
 
 #arrow-buttons {
     padding-left: 200px;
+}
+
+#flappy-square-img {
+    width: 100px;
+    /* padding-left: 100px; */
 }
